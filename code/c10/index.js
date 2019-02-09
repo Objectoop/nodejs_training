@@ -1,5 +1,6 @@
 var express = require('express');
 var mysql      = require('mysql');
+var sync_mysql = require('sync-mysql');
 var bodyParser = require('body-parser')
 var app = express();
 
@@ -10,12 +11,14 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 
-var pool = mysql.createPool({
-   host     : 'localhost',
-   user     : 'root',
-   password : '',
-   database : 'nodejs_training'
- });
+var conProfile = {
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'nodejs_training'
+};
+
+var pool = mysql.createPool(conProfile);
 
 
 app.get('/', function (req, res) {
@@ -80,20 +83,31 @@ app.get('/get_detail_topic/:topic_id', function(req, res){
 
 app.post('/create_topic', function(req, res){
    
-   console.log(req.body);
-   res.send("");
+  // console.log(req.body);
+   //res.send("");
 
-   /*
+   
    pool.getConnection(function(err, con){
       con.query("INSERT INTO t_topic(topic_id, topic_name,created_date)VALUES(null,?,NOW())",[req.query.topic_name], function (err, result, fields) {
          if (err) throw err;
          con.release();
          res.send({ 'status' : 'Create Success'});
        });
-   });*/
+   });
+});
 
-   
 
+//Extra sync mysql
+//npm install sync-mysql --save
+app.get('/get_full_detail_topics',function(req,res){
+    var sync_con = new sync_mysql(conProfile);
+    const result = sync_con.query('SELECT * from t_topic');
+    for(var i = 0 ; i < result.length; i ++)
+    {
+        var reply_result = sync_con.query('SELECT * from t_reply where topic_id = ? ',[result[i].topic_id]);
+        result[i].replies = reply_result;
+    }
+    res.json(result);
 });
 
 

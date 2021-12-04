@@ -1,6 +1,8 @@
 var fs = require("fs");
 
-fs.writeFileSync("./test_write_file.txt","This is content written to the file");
+fs.writeFileSync("./input.txt","TEST KMITL");
+console.log("Finish");
+
 /*
 //Asynchronous
 fs.writeFile('input.txt', 'Simply Easy Learning!', function(err) {
@@ -18,8 +20,7 @@ fs.writeFile('input.txt', 'Simply Easy Learning!', function(err) {
        console.log("Asynchronous read: " + data.toString());
     });
  });
-
+*/
  //fs.mkdir
  //fs.rmdir
- */
-console.log("Finish");
+ 

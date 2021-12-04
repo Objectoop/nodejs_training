@@ -1,8 +1,11 @@
 var express = require('express');
 var mysql      = require('mysql');
-var sync_mysql = require('sync-mysql');
+//var sync_mysql = require('sync-mysql');
 var bodyParser = require('body-parser')
 var app = express();
+
+var cors = require('cors');
+app.use(cors());
 
 app.use(express.static('public'));
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
@@ -14,8 +17,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 var conProfile = {
   host     : 'localhost',
   user     : 'root',
-  password : '',
-  database : 'nodejs_training'
+  password : '1234',
+  database : 'nodejs'
 };
 
 var pool = mysql.createPool(conProfile);
@@ -81,14 +84,14 @@ app.get('/get_detail_topic/:topic_id', function(req, res){
 });
 
 
-app.post('/create_topic', function(req, res){
+app.post('/create_topic/:topic_name', function(req, res){
    
   // console.log(req.body);
    //res.send("");
 
    
    pool.getConnection(function(err, con){
-      con.query("INSERT INTO t_topic(topic_id, topic_name,created_date)VALUES(null,?,NOW())",[req.query.topic_name], function (err, result, fields) {
+      con.query("INSERT INTO t_topic(topic_id, topic_name,created_date)VALUES(null,?,NOW())",[req.params.topic_name], function (err, result, fields) {
          if (err) throw err;
          con.release();
          res.send({ 'status' : 'Create Success'});

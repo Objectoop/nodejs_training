@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var cors = require('cors');
+app.use(cors());
 
 // This responds with "Hello World" on the homepage
 app.get('/', function (req, res) {

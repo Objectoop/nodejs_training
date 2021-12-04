@@ -3,8 +3,8 @@ var mysql = require('mysql');
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
-  database: "nodejs_training"
+  password: "1234",
+  database: "nodejs"
 });
 
 con.connect(function(err) {
@@ -23,7 +23,7 @@ con.connect(function(err) {
     }*/
 
     //fields[].name
-    //con.end();
+    con.end();
   });
 
 

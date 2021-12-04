@@ -1,17 +1,23 @@
 var express = require('express');
 var app = express();
 
+var cors = require('cors');
+app.use(cors());
+app.use(express.json({ limit: '100mb' }));
+
 app.use(express.static('public'));
-//var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 
 
-//app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ type: 'application/*+json' }))
 
 
 app.get('/', function (req, res) {
    res.sendFile( __dirname + "/pages/" + "http_verb_get.html" );
 })
 
+/*
 app.get('/test_submit', function (req, res) {
    // Prepare output in JSON format
    response = {
@@ -21,8 +27,8 @@ app.get('/test_submit', function (req, res) {
    console.log(response);
    res.end(JSON.stringify(response));
 });
+*/
 
-/*
 app.post('/test_submit', function (req, res) {
     // Prepare output in JSON format
     response = {
@@ -32,7 +38,7 @@ app.post('/test_submit', function (req, res) {
     console.log(response);
     res.end(JSON.stringify(response));
  });
-*/
+
 var server = app.listen(8081, function () {
    var host = server.address().address
    var port = server.address().port
